@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--命名空间指向对应的接口-->
+<mapper namespace="net.wanho.mapper.StudentMapper">
+    <!--
+    id  对应参数中的方法名
+    parameterType  参数类型
+    -->
+
+<resultMap id="stuMap" type="Student">
+    <id column="id" property="id"/>
+    <result column="aname" property="name"/>
+    <result column="age" property="age"/>
+    <result column="gender" property="gender"/>
+    <result column="address" property="address"/>
+</resultMap>
+
+    <update id="updateStudentbById">
+        UPDATE student SET sname=#{param1},address=#{param2} where id=#{param3}
+
+
+
+    </update>
+
+
+    <select id="getAllStudents" resultMap="stuMap">
+
+       SELECT
+           id,
+           sname,
+           age,
+           gender,
+           address
+       FROM
+           student
+
+   </select>
+
+
+
+
+    <insert id="addStudent" parameterType="Student">
+
+        INSERT  INTO Student VALUES (NULL ,#{sname},#{age},#{gender},#{address})
+
+    </insert>
+
+    <insert id="addStudentReturnKey" useGeneratedKeys="true" keyProperty="id">
+
+        INSERT  INTO Student VALUES (NULL ,#{sname},#{age},#{gender},#{address})
+
+    </insert>
+
+    <insert id="addStudentReturnKey2">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            SELECT last_insert_id()
+
+        </selectKey>
+        INSERT  INTO Student VALUES (NULL ,#{sname},#{age},#{gender},#{address})
+
+    </insert>
+
+    <select id="selectStudentById" resultType="net.wanho.pojo.Student">
+
+        SELECT * FROM student WHERE id=#{id}
+
+    </select>
+
+    <select id="selectStudentByName" resultType="net.wanho.pojo.Student" parameterType="string">
+
+        SELECT * FROM student WHERE sname LIKE concat("%",#{name},"%")
+
+    </select>
+
+
+
+
+</mapper>
